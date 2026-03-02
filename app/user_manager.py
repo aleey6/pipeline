@@ -1,6 +1,6 @@
 class UserManager:
 
-    def _init_(self):
+    def __init__(self):
         self.users = []
 
     def add_user(self, username):
