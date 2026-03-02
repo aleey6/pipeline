@@ -1,0 +1,27 @@
+name: Pipeline simple
+on: 
+  push:
+    branches:
+      -main
+  pull_request:
+    branches:
+      -main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout
+      - name: Inataller Python
+        uses: actions/setup-python
+        with:
+          python-version: "3.11"
+      - name: Installer les dependances
+        run: pip install -r requirements.txt
+      - name: Lint le code
+        run: |
+          flake8 app --count --select=E9,F63,F7,F82,F841 --show-source --statistics 
+          flake8 app --count --max-complexity=10 --max-line-length=127 --statistics 
+          flake8 app --count --max-line-length=127 --statistics 
+      - name: Lancer les tests
+        run: pytest -v --cov=app
